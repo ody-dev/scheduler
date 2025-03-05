@@ -2,13 +2,12 @@
 
 namespace Ody\Scheduler\Commands;
 
-use Ody\Core\Console\Style;
+use Ody\Core\Foundation\Console\Style;
 use Ody\Core\Server\Dependencies;
 use Ody\HttpServer\HttpServerState;
 use Ody\Scheduler\Crontab;
 use Ody\Scheduler\SchedulerServer;
 use Ody\Scheduler\SchedulerServerState;
-use Ody\Scheduler\Tests\Jobs\JobPerMin;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,7 +73,7 @@ class StartCommand extends Command
         array_walk($jobs, fn ($job) => $crontab->register(new $job()));
 
         $server = SchedulerServer::init()
-            ->createServer(false)
+            ->createServer(config('scheduler'), false)
             ->setServerConfig(config('scheduler.additional'))
             ->registerCallbacks(config("scheduler.callbacks"))
             ->getServerInstance();
