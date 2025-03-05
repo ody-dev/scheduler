@@ -48,7 +48,6 @@ class StartCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $serverState = SchedulerServerState::getInstance();
         $this->io = new Style($input, $output);
 
@@ -63,17 +62,12 @@ class StartCommand extends Command
             $this->handleRunningServer($input, $output);
         }
 
-        $jobs = [
-            \Ody\Scheduler\Jobs\JobPerMin::class
-        ];
-
-//        new JobPerMin();
-
         $crontab = new Crontab();
+        $jobs = config('scheduler.jobs', []);
         array_walk($jobs, fn ($job) => $crontab->register(new $job()));
 
         $server = SchedulerServer::init()
-            ->createServer(config('scheduler'), false)
+            ->createServer(config('scheduler'))
             ->setServerConfig(config('scheduler.additional'))
             ->registerCallbacks(config("scheduler.callbacks"))
             ->getServerInstance();

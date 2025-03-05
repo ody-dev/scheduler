@@ -21,11 +21,8 @@ class SchedulerServer
         $this->server->start();
     }
 
-
-    public function createServer($daemonize): SchedulerServer
+    public function createServer($config): SchedulerServer
     {
-
-        $config = config('scheduler');
         $this->server = new Server(
             $config['host'],
             (int) $config['port'],
@@ -33,7 +30,6 @@ class SchedulerServer
             $config["sock_type"]
         );
 
-        var_dump($config["runtime"]["enable_coroutine"]);
         if($config["runtime"]["enable_coroutine"]) {
             Runtime::enableCoroutine(
                 $config["runtime"]["hook_flag"]

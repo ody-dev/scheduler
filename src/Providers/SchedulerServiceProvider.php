@@ -1,6 +1,6 @@
 <?php
 
-namespace Ody\Scheduler;
+namespace Ody\Scheduler\Providers;
 
 use Ody\Core\Foundation\Providers\ServiceProvider;
 use Ody\Scheduler\Commands\StartCommand;
