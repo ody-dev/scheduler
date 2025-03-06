@@ -10,7 +10,8 @@
     }
   ],
   "require": {
-    "ody/swoole": "^0.0.2",
+    "ody/swoole": "dev-master",
+    "ody/server": "dev-master",
     "dragonmantank/cron-expression": "^2.2"
   },
   "autoload": {
