@@ -4,11 +4,10 @@ namespace Ody\Scheduler\Commands;
 
 use Ody\Core\Foundation\Console\Style;
 use Ody\Core\Server\Dependencies;
-use Ody\HttpServer\HttpServerState;
+use Ody\Server\State\HttpServerState;
+use Ody\Server\ServerManager;
 use Ody\Scheduler\Crontab;
-use Ody\Scheduler\ServerCallbacks;
 use Ody\Scheduler\SchedulerServerState;
-use Ody\Swoole\Server\ServerManager;
 use Ody\Swoole\Server\ServerType;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
