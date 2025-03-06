@@ -8,9 +8,9 @@ return [
     "port" => 9503,
     "sock_type" => SWOOLE_SOCK_TCP,
     "callbacks" => [
-        SchedulerEvent::ON_START => [\Ody\Scheduler\SchedulerServer::class, 'onStart'],
-        SchedulerEvent::ON_REQUEST => [\Ody\Scheduler\SchedulerServer::class, "onRequest"],
-        SchedulerEvent::ON_WORKER_START => [\Ody\Scheduler\SchedulerServer::class, "onWorkerStart"],
+        SchedulerEvent::ON_START => [\Ody\Scheduler\ServerCallbacks::class, 'onStart'],
+        SchedulerEvent::ON_REQUEST => [\Ody\Scheduler\ServerCallbacks::class, "onRequest"],
+        SchedulerEvent::ON_WORKER_START => [\Ody\Scheduler\ServerCallbacks::class, "onWorkerStart"],
     ],
     "ssl" => [
         "ssl_cert_file" => null ,

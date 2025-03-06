@@ -6,8 +6,10 @@ use Ody\Core\Foundation\Console\Style;
 use Ody\Core\Server\Dependencies;
 use Ody\HttpServer\HttpServerState;
 use Ody\Scheduler\Crontab;
-use Ody\Scheduler\SchedulerServer;
+use Ody\Scheduler\ServerCallbacks;
 use Ody\Scheduler\SchedulerServerState;
+use Ody\Swoole\Server\ServerManager;
+use Ody\Swoole\Server\ServerType;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -66,7 +68,7 @@ class StartCommand extends Command
         $jobs = config('scheduler.jobs', []);
         array_walk($jobs, fn ($job) => $crontab->register(new $job()));
 
-        $server = SchedulerServer::init()
+        $server = ServerManager::init(ServerType::HTTP_SERVER, SchedulerServerState::getInstance())
             ->createServer(config('scheduler'))
             ->setServerConfig(config('scheduler.additional'))
             ->registerCallbacks(config("scheduler.callbacks"))
