@@ -2,10 +2,10 @@
 
 namespace Ody\Scheduler;
 
+use Ody\Core\Monolog\Logger;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
-use Swoole\Runtime;
 
 class ServerCallbacks
 {
@@ -22,9 +22,10 @@ class ServerCallbacks
     public static function onStart (Server $server): void
     {
         $protocol = ($server->ssl) ? "https" : "http";
-        echo "   \033[1mSUCCESS\033[0m  Scheduler instance started successfully\n";
-        echo "   \033[1mINFO\033[0m  listen on " . $protocol . "://" . $server->host . ':' . $server->port . PHP_EOL;
-        echo "   \033[1mINFO\033[0m  press Ctrl+C to stop the server\n";
+        $protocol = ($server->ssl) ? "https" : "http";
+        Logger::write('info', 'schduler started successfully');
+        Logger::write('info', "listening on $protocol://$server->host:$server->port");
+        Logger::write('info', 'press Ctrl+C to stop the server');
     }
 
     public static function onWorkerStart(Server $server, int $workerId): void
