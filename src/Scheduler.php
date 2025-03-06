@@ -13,11 +13,11 @@ class Scheduler extends AbstractProcess
     private $schedulerTable;
 
     /** @var Crontab */
-    private $crontabInstance;
+    private Crontab $crontabInstance;
 
-    private $timerIds = [];
+    private array $timerIds = [];
 
-    protected function run($arg)
+    protected function run($arg): void
     {
         $this->crontabInstance = $arg['crontabInstance'];
         $this->schedulerTable = $arg['schedulerTable'];
@@ -31,6 +31,7 @@ class Scheduler extends AbstractProcess
         }
 
         $jobs = $arg['jobs'];
+
         /**
          * @var  $jobName
          * @var JobInterface $job
@@ -55,11 +56,10 @@ class Scheduler extends AbstractProcess
         });
     }
 
-    private function cronProcess()
+    private function cronProcess(): void
     {
         foreach ($this->schedulerTable as $jobName => $task) {
             if (intval($task['isStop']) == 1) {
-                // 删除已添加的定时器
                 if(isset($this->timerIds[$jobName])){
                     $timerId = $this->timerIds[$jobName];
                     Timer::getInstance()->clear($timerId);
@@ -71,7 +71,7 @@ class Scheduler extends AbstractProcess
             if ($task['taskNextRunTime'] != $nextRunTime) {
                 $this->schedulerTable->set($jobName, ['taskNextRunTime' => $nextRunTime]);
             }
-            //本轮已经创建过任务
+
             if (isset($this->timerIds[$jobName])) {
                 continue;
             }

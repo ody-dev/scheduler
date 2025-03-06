@@ -2,6 +2,7 @@
 
 namespace Ody\Scheduler;
 
+use Ody\Swoole\Process\Exception;
 use Ody\Swoole\Process\Socket\AbstractUnixProcess;
 use Ody\Scheduler\Protocol\Pack;
 use Ody\Scheduler\Protocol\Command;
@@ -11,16 +12,25 @@ use Swoole\Table;
 
 class Worker extends AbstractUnixProcess
 {
-    /** @var Crontab */
-    private $crontabInstance;
-    /** @var Table */
-    private $workerStatisticTable;
-    private $jobs = [];
-    private $workerIndex = 0;
-    /** @var Table */
-    private $schedulerTable;
 
-    public function run($arg)
+    private $crontabInstance;
+
+
+    private Table $workerStatisticTable;
+
+    private array $jobs = [];
+
+    private int $workerIndex = 0;
+
+
+    private Table $schedulerTable;
+
+    /**
+     * @param $arg
+     * @return void
+     * @throws Exception
+     */
+    public function run($arg): void
     {
         $this->crontabInstance = $arg['crontabInstance'];
         $this->workerStatisticTable = $arg['workerStatisticTable'];
@@ -33,7 +43,12 @@ class Worker extends AbstractUnixProcess
         parent::run($arg);
     }
 
-    function onAccept(Socket $socket)
+    /**
+     * @param Socket $socket
+     * @return void
+     * @throws \Throwable
+     */
+    function onAccept(Socket $socket): void
     {
         $response = new Response();
 
@@ -94,7 +109,12 @@ class Worker extends AbstractUnixProcess
         }
     }
 
-    private function reply(Socket $socket, Response $response)
+    /**
+     * @param Socket $socket
+     * @param Response $response
+     * @return void
+     */
+    private function reply(Socket $socket, Response $response): void
     {
         $data = serialize($response);
         $socket->sendAll(Pack::pack($data));
