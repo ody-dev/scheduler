@@ -2,7 +2,7 @@
 
 namespace Ody\Scheduler;
 
-use Ody\Swoole\ServerState;
+use Ody\Server\State\ServerState;
 
 class SchedulerServerState extends ServerState
 {

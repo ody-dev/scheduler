@@ -4,11 +4,11 @@ namespace Ody\Scheduler\Commands;
 
 use Ody\Core\Foundation\Console\Style;
 use Ody\Core\Server\Dependencies;
-use Ody\Server\State\HttpServerState;
-use Ody\Server\ServerManager;
 use Ody\Scheduler\Crontab;
 use Ody\Scheduler\SchedulerServerState;
-use Ody\Swoole\Server\ServerType;
+use Ody\Server\ServerManager;
+use Ody\Server\ServerType;
+use Ody\Server\State\HttpServerState;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,7 +60,7 @@ class StartCommand extends Command
         }
 
         if ($serverState->schedulerServerIsRunning()) {
-            $this->handleRunningServer($input, $output);
+            $this->handleRunningServer($input, $output, $serverState);
         }
 
         $crontab = new Crontab();
@@ -82,9 +82,12 @@ class StartCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @param $serverState
      * @return void
+     *
+     * TODO: Put this in a reusable trait/class (HasRunningServer))
      */
-    private function handleRunningServer(InputInterface $input, OutputInterface $output): void
+    private function handleRunningServer(InputInterface $input, OutputInterface $output, $serverState): void
     {
         $this->io->error('failed to listen server port[' . config('server.host') . ':' . config('server.port') . '], Error: Address already', true);
 
@@ -100,7 +103,6 @@ class StartCommand extends Command
             return;
         }
 
-        $serverState = SchedulerServerState::getInstance();
         $serverState->killProcesses([
             $serverState->getMasterProcessId(),
             $serverState->getManagerProcessId(),

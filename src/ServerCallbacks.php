@@ -14,7 +14,7 @@ class ServerCallbacks
      * @param Response $response
      * @return void
      */
-    public static function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response): void
+    public static function onRequest(Request $request, Response $response): void
     {
 
     }
