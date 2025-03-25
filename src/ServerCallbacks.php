@@ -22,7 +22,6 @@ class ServerCallbacks
     public static function onStart (Server $server): void
     {
         $protocol = ($server->ssl) ? "https" : "http";
-        $protocol = ($server->ssl) ? "https" : "http";
         Logger::write('info', 'schduler started successfully');
         Logger::write('info', "listening on $protocol://$server->host:$server->port");
         Logger::write('info', 'press Ctrl+C to stop the server');
